@@ -1,6 +1,6 @@
 /**
  * angular-strap
- * @version v2.3.13 - 2018-07-20
+ * @version v2.3.13 - 2018-08-28
  * @link http://mgcrea.github.io/angular-strap
  * @author Olivier Louvignes <olivier@mg-crea.com> (https://github.com/mgcrea)
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -133,8 +133,12 @@ angular.module('mgcrea.ngStrap.tooltip', [ 'mgcrea.ngStrap.core', 'mgcrea.ngStra
       $tooltip.show = function() {
         if (!options.bsEnabled || $tooltip.$isShown) return;
         scope.$emit(options.prefixEvent + '.show.before', $tooltip);
+        var cancel = false;
         if (angular.isDefined(options.onBeforeShow) && angular.isFunction(options.onBeforeShow)) {
-          options.onBeforeShow($tooltip);
+          cancel = options.onBeforeShow($tooltip);
+        }
+        if (cancel) {
+          return;
         }
         var parent;
         var after;
@@ -214,8 +218,12 @@ angular.module('mgcrea.ngStrap.tooltip', [ 'mgcrea.ngStrap.core', 'mgcrea.ngStra
       $tooltip.hide = function(blur) {
         if (!$tooltip.$isShown) return;
         scope.$emit(options.prefixEvent + '.hide.before', $tooltip);
+        var cancel = false;
         if (angular.isDefined(options.onBeforeHide) && angular.isFunction(options.onBeforeHide)) {
-          options.onBeforeHide($tooltip);
+          cancel = options.onBeforeHide($tooltip);
+        }
+        if (cancel) {
+          return;
         }
         _blur = blur;
         _tipToHide = tipElement;

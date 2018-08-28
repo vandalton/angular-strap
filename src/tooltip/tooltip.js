@@ -177,9 +177,16 @@ angular.module('mgcrea.ngStrap.tooltip', ['mgcrea.ngStrap.core', 'mgcrea.ngStrap
           if (!options.bsEnabled || $tooltip.$isShown) return;
 
           scope.$emit(options.prefixEvent + '.show.before', $tooltip);
+          var cancel = false;
+
           if (angular.isDefined(options.onBeforeShow) && angular.isFunction(options.onBeforeShow)) {
-            options.onBeforeShow($tooltip);
+            cancel = options.onBeforeShow($tooltip);
           }
+
+          if(cancel) {
+            return;
+          }
+
           var parent;
           var after;
           if (options.container) {
@@ -284,8 +291,15 @@ angular.module('mgcrea.ngStrap.tooltip', ['mgcrea.ngStrap.core', 'mgcrea.ngStrap
 
           if (!$tooltip.$isShown) return;
           scope.$emit(options.prefixEvent + '.hide.before', $tooltip);
+
+          var cancel = false;
+
           if (angular.isDefined(options.onBeforeHide) && angular.isFunction(options.onBeforeHide)) {
-            options.onBeforeHide($tooltip);
+            cancel = options.onBeforeHide($tooltip);
+          }
+
+          if(cancel) {
+            return;
           }
 
           // store blur value for leaveAnimateCallback to use
